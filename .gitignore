@@ -1,0 +1,77 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+*.db
+*.sqlite
+*.sqlite3# AstrixCore Verification AI - Root .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+ENV/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Storage
+storage/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/*.log
+frontend/.turbo/
+
+# Docker
+docker-compose.override.yml
+
+# Verilator
+obj_dir/
+*.vcd
+*.fst
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+
+# Coverage
+coverage/
+
+# Reports
+*.report

@@ -1,0 +1,70 @@
+"""Core configuration for AstrixCore Verification AI platform."""
+
+from pathlib import Path
+from typing import Optional, List
+from pydantic_settings import BaseSettings
+from pydantic import Field
+
+
+class Settings(BaseSettings):
+    """Application settings loaded from environment variables."""
+
+    # Application
+    APP_NAME: str = "AstrixCore Verification AI"
+    APP_VERSION: str = "0.1.0"
+    DEBUG: bool = Field(default=False)
+    SECRET_KEY: str = Field(default="change-me-in-production")
+    API_PREFIX: str = "/api"
+
+    # Database
+    DATABASE_URL: str = Field(
+        default="sqlite+aiosqlite:///./astrixcore.db"
+    )
+    DATABASE_SYNC_URL: str = Field(
+        default="sqlite:///./astrixcore.db"
+    )
+
+    # File Storage
+    STORAGE_ROOT: Path = Field(default=Path("./storage"))
+    RTL_STORAGE: Path = Field(default=Path("./storage/rtl"))
+    TEST_STORAGE: Path = Field(default=Path("./storage/tests"))
+    LOG_STORAGE: Path = Field(default=Path("./storage/logs"))
+    COVERAGE_STORAGE: Path = Field(default=Path("./storage/coverage"))
+
+    # LLM Configuration
+    LLM_PROVIDER: str = Field(default="mock")
+    LLM_API_KEY: Optional[str] = Field(default=None)
+    LLM_MODEL: str = Field(default="gpt-4o")
+    LLM_BASE_URL: Optional[str] = Field(default=None)
+    LLM_TEMPERATURE: float = Field(default=0.1)
+    LLM_MAX_TOKENS: int = Field(default=4096)
+
+    # Simulation
+    VERILATOR_PATH: str = Field(default="verilator")
+    ICARUS_PATH: str = Field(default="iverilog")
+    SIMULATION_TIMEOUT: int = Field(default=300)
+    MAX_CONCURRENT_SIMS: int = Field(default=4)
+
+    # AI Agent
+    AI_ENABLED: bool = Field(default=True)
+    AI_CONFIDENCE_THRESHOLD: float = Field(default=0.6)
+    AI_MAX_RETRIES: int = Field(default=3)
+
+    # Security
+    ENCRYPTION_KEY: Optional[str] = Field(default=None)
+    AUDIT_LOG_ENABLED: bool = Field(default=True)
+    CORS_ORIGINS: List[str] = Field(default=["http://localhost:3000", "http://localhost:5173"])
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+    def ensure_storage_dirs(self) -> None:
+        """Create storage directories if they don't exist."""
+        for path in [self.STORAGE_ROOT, self.RTL_STORAGE, self.TEST_STORAGE,
+                      self.LOG_STORAGE, self.COVERAGE_STORAGE]:
+            path.mkdir(parents=True, exist_ok=True)
+
+
+settings = Settings()
+settings.ensure_storage_dirs()
